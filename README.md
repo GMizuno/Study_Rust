@@ -15,6 +15,10 @@ O principal objetivo deste repositório é aprimorar nosso conhecimento em progr
 
 Além de aprender Rust, também exploraremos maneiras de integrar o código Rust com scripts Python. Essa integração nos permitirá aproveitar as vantagens de ambas as linguagens, combinando a eficiência e o desempenho de Rust com a flexibilidade e simplicidade do Python.
 
+## Execução de Códigos
+
+Para executar os códigos, faremos uso do playground online oficial de [ Rust: Rust Playground](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021). Isso nos proporcionará um ambiente de desenvolvimento rápido e fácil para experimentar e testar nossas implementações em Rust.
+
 ## Contribuições
 
 Contribuições são bem-vindas! Sinta-se à vontade para enviar solicitações de pull com novos códigos, correções ou melhorias. Juntos, podemos expandir nosso conhecimento em Rust e promover uma comunidade de aprendizado colaborativo.
