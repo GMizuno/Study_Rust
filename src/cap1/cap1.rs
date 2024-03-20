@@ -1,4 +1,4 @@
-fn main() {
+fn cap1() {
     let first_letter = 'A';
     let space = ' ';
     let other_language_char = 'Ꮔ';
