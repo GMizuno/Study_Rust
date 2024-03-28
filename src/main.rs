@@ -1,57 +1,62 @@
-
-enum Mood {
-    Happy,
-    Sleepy,
-    NotBad,
-    Angry,
+#[derive(Debug)]
+enum AnimalType {
+    Cat,
+    Dog,
 }
 
-fn match_mood(mood: &Mood) -> i32 {
-    use Mood::*;
-    let happiness_level = match mood {
-        Happy => 10,
-        Sleepy => 6,
-        NotBad => 7,
-        Angry => 2,
-    };
-    happiness_level
+#[derive(Debug)]
+struct Animal {
+    age: u8,
+    animal_type: AnimalType,
 }
 
-enum Season {
-    Spring,
-    Summer,
-    Autumn,
-    Winter,
-}
-
-enum Star {
-    BrownDwarf = 10,
-    RedDwarf = 50,
-    YellowStar = 100,
-    RedGiant = 1000,
-    DeadStar,
-}
-
-
-fn main() {
-    let my_mood = Mood::Happy;
-    let happinesse_level = match_mood(&my_mood);
-    println!("Out of 1 to 10, my happiness is {happinesse_level}");
-    use Season::*;
-    let four_seasons = vec![Spring, Summer, Autumn, Winter];
-    for season in four_seasons {
-        println!("Season as u32 {}", season as u32);
-        // println!("Season {}", season as i32); da Erro pois Season nao tem metodos Copy ou Clone !!!!!
-    }
-
-    use Star::*;
-    let starvec = vec![BrownDwarf, RedDwarf, YellowStar, RedGiant, DeadStar];
-    for star in starvec {
-        match star as u32 {
-            size if size <= 80 => println!("Not the biggest star."),
-            size if size >= 80 && size <= 200 => println!("This is a good-sized star."),
-            other_size => println!("That star is pretty big! It's {other_size}"),
-            // _ => println!("That star is pretty big!"), Poderia ser isso, mas como vamos usar o valor temos q fazer do jeito acima
+impl Animal {
+    fn new_cat() -> Self { // Self == Animla (Type)
+        Self {
+            age: 10,
+            animal_type: AnimalType::Cat,
         }
     }
+
+    fn check_type(&self) { // Acessando objeto (self) atraves de referencia
+        match self.animal_type {
+            AnimalType::Dog => println!("The Animal is a dog!!!!"),
+            AnimalType::Cat => println!("The Animal is a cat!!!!"),
+        }
+    }
+    fn change_to_cat(&mut self) { // Acessando objeto de forma mutavel
+        self.animal_type = AnimalType::Cat;
+        println!("Changed animal to cat! Now it's {self:?}")
+    }
+
+    fn change_to_dog(&mut self) {
+        self.animal_type = AnimalType::Dog;
+        println!("Changed animal to dog! Now it's {self:?}");
+    }
+
+    fn change_age(&mut self, age: u8) {
+        self.age = age;
+        println!("Changed animal age! Now it's {}", self.age.to_string());
+    }
+
+    fn check_age_and_type(&self) {
+        // let t = self.animal_type; Da erro de Borrow, t "toma" o valor de self.animal_type 
+        println!("The Animal is a {:?} with age  {}!!!!", self.animal_type, self.age);
+    }
 }
+
+fn main() {
+    let mut new_animal = Animal::new_cat();
+    println!("Animal Type {new_animal:?}");
+    new_animal.check_type();
+    new_animal.check_age_and_type();
+    new_animal.change_to_cat();
+    new_animal.check_type();
+    new_animal.change_to_dog();
+    new_animal.check_type();
+    new_animal.change_to_cat();
+    new_animal.change_age(100);
+    new_animal.change_age(50);
+    new_animal.check_age_and_type()
+}
+
