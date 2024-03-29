@@ -55,4 +55,14 @@ fn main() {
 
     handler_options(&option_vec);
     // println!("{take_fifth_value:?}") Erro Option nao tem Debug
+
+    for vec in vec![small, big] {
+        let inside_number = take_fifth_value(vec);
+        if inside_number.is_some() {
+            println!(" we got: {}", inside_number.unwrap())
+        } else {
+            println!("We got nothing");
+        }
+
+    }
 }
