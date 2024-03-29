@@ -1,62 +1,58 @@
-#[derive(Debug)]
-enum AnimalType {
-    Cat,
-    Dog,
+use std::fmt::Debug;
+use std::fmt::Display;
+use std::cmp::PartialOrd;
+use std::collections::btree_map::Values;
+
+fn return_item<T>(item: T) -> T {
+    println!("Here is your item.");
+    item
 }
 
-#[derive(Debug)]
-struct Animal {
-    age: u8,
-    animal_type: AnimalType,
+fn print_item<T: Debug>(item: T) {
+    println!("Here is your item: {item:?}")
 }
 
-impl Animal {
-    fn new_cat() -> Self { // Self == Animla (Type)
-        Self {
-            age: 10,
-            animal_type: AnimalType::Cat,
+fn compare_and_display<T: Display, U: Display + PartialOrd>(statement: T, input_1: U, input_2: U) {
+    println!("{statement}! Is {input_1} greater than {input_2}? {}", input_1 > input_2);
+}
+
+fn take_fifth_value(values: Vec<i32>) -> Option<i32> {
+    // values[5] da erro se deixar assim
+    if values.len() < 5 {
+        None
+    } else {
+        Some(values[4])
+    }
+}
+
+fn handler_options(my_option: &Vec<Option<i32>>) {
+    for item in my_option {
+        match item {
+            Some(number) => println!("Found a {number}"),
+            None => println!("Found a None")
         }
     }
-
-    fn check_type(&self) { // Acessando objeto (self) atraves de referencia
-        match self.animal_type {
-            AnimalType::Dog => println!("The Animal is a dog!!!!"),
-            AnimalType::Cat => println!("The Animal is a cat!!!!"),
-        }
-    }
-    fn change_to_cat(&mut self) { // Acessando objeto de forma mutavel
-        self.animal_type = AnimalType::Cat;
-        println!("Changed animal to cat! Now it's {self:?}")
-    }
-
-    fn change_to_dog(&mut self) {
-        self.animal_type = AnimalType::Dog;
-        println!("Changed animal to dog! Now it's {self:?}");
-    }
-
-    fn change_age(&mut self, age: u8) {
-        self.age = age;
-        println!("Changed animal age! Now it's {}", self.age.to_string());
-    }
-
-    fn check_age_and_type(&self) {
-        // let t = self.animal_type; Da erro de Borrow, t "toma" o valor de self.animal_type 
-        println!("The Animal is a {:?} with age  {}!!!!", self.animal_type, self.age);
-    }
 }
+
 
 fn main() {
-    let mut new_animal = Animal::new_cat();
-    println!("Animal Type {new_animal:?}");
-    new_animal.check_type();
-    new_animal.check_age_and_type();
-    new_animal.change_to_cat();
-    new_animal.check_type();
-    new_animal.change_to_dog();
-    new_animal.check_type();
-    new_animal.change_to_cat();
-    new_animal.change_age(100);
-    new_animal.change_age(50);
-    new_animal.check_age_and_type()
-}
+    let console = return_item("Nintendo");
+    let jogo = return_item("Zelda");
 
+    println!("Vc tem {console} e {jogo}");
+    print_item(console);
+    compare_and_display("Listen up", 1, 3);
+
+    let small = vec![1, 2];
+    let big = vec![1, 2, 3, 4, 5];
+    let r1 = take_fifth_value(small.clone());
+    let r2 = take_fifth_value(big);
+    println!("Got it {:?}, {:?}", r1, r2);
+
+    let mut option_vec = Vec::new();
+    option_vec.push(r1);
+    option_vec.push(r2);
+
+    handler_options(&option_vec);
+    // println!("{take_fifth_value:?}") Erro Option nao tem Debug
+}
