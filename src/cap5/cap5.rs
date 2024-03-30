@@ -46,7 +46,7 @@ fn main() {
     let small = vec![1, 2];
     let big = vec![1, 2, 3, 4, 5];
     let r1 = take_fifth_value(small.clone());
-    let r2 = take_fifth_value(big);
+    let r2 = take_fifth_value(big.clone());
     println!("Got it {:?}, {:?}", r1, r2);
 
     let mut option_vec = Vec::new();
@@ -59,7 +59,7 @@ fn main() {
     for vec in vec![small, big] {
         let inside_number = take_fifth_value(vec);
         if inside_number.is_some() {
-            println!(" we got: {}", inside_number.unwrap())
+            println!("We got: {}", inside_number.unwrap())
         } else {
             println!("We got nothing");
         }
