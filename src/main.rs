@@ -1,61 +1,50 @@
-#[derive(Debug)]
-struct City {
-    name: &'static str, // Se fosse &str seria um problema, pois se o valor da referencia for limpando o q seria feito com esse referencia?
-    date_founded: u32,
-}
-
-#[derive(Debug)]
-struct City2<'a> {
-    name: &'a str, // Se fosse &str seria um problema, pois se o valor da referencia for limpando o q seria feito com esse referencia?
-    date_founded: u32,
-}
-
-struct Adventurer<'a> {
-    name: &'a str,
-    hit_point: u32,
-}
-
-impl Adventurer<'_> {
-    // Se nao incluir <'_> esse anonymous lifetime o compilador retornar um erro
-    fn take_damage(&mut self) {
-        self.hit_point -= 20;
-        println!("{} has {} hit point left!!!", self.name, self.hit_point);
-    }
-}
-
-impl std::fmt::Display for Adventurer<'_> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{} has {} hit point left!!!", self.name, self.hit_point)
-    }
-}
+use std::sync::RwLock;
 
 fn main() {
-    let city = City {
-        name: "Niteroi",
-        date_founded: 1995,
-    };
-    let my_city = city;
-    println!("{my_city:?}");
+    let my_rwlock = RwLock::new(5);
+    let read1 = my_rwlock.read().unwrap();
+    let read2 = my_rwlock.read().unwrap();
+    println!("{read1:?}, {read2:?}");
 
-    // Retorna um erro, pois city_name não "vivera" tempo suficiente
-    // let city_name = vec!["Niteroi".to_string(), "Rio de Janeiro".to_string()];
-    // let my_city2 = City {
-    //     name: &city_name[0],
-    //     date_founded: 1995,
-    // };
-    // println!("{my_city2:?}");
+    // let write1 = my_rwlock.write().unwrap(); // deadlock
 
-    let city_name = vec!["Niteroi".to_string(), "Rio de Janeiro".to_string()];
-    let my_city2 = City2 {
-        name: &city_name[0],
-        date_founded: 1995,
-    };
-    println!("{my_city2:?}");
+    drop(read1);
+    drop(read2);
 
-    let mut billy = Adventurer {
-        name: "Biily",
-        hit_point: 100_000,
+    let mut write1 = my_rwlock.write().unwrap();
+    *write1 = 6;
+    println!("{:?}", my_rwlock);
+
+    println!("\n\nEXEMPLO COM TRY_LOCK\n\n");
+
+    let my_rwlock = RwLock::new(5);
+    let read1 = my_rwlock.read().unwrap();
+    let read2 = my_rwlock.read().unwrap();
+    println!("{read1:?}, {read2:?}");
+
+    let mut write1 = my_rwlock.try_write();
+
+    match write1 {
+        Ok(mut value) => {
+            *value += 10;
+            println!("Value {value}")
+        }
+        Err(_) => println!("Couldn't get write access, sorry"),
     };
-    println!("{}", billy);
-    billy.take_damage();
+
+    println!("\n\nEXEMPLO 2 COM TRY_LOCK\n\n");
+
+    let my_rwlock2 = RwLock::new(5);
+    let mut write2 = my_rwlock2.try_write();
+
+    println!("{write2:?}");
+
+    match write2 {
+        Ok(mut value) => {
+            println!("Value was {value}");
+            *value += 10;
+            println!("Now Value is {value}")
+        }
+        Err(_) => println!("Couldn't get write access, sorry"),
+    };
 }
