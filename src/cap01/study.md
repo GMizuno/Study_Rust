@@ -210,7 +210,7 @@ De forma resumida
 
 ## Mutability e Shadowing
 
-Em Rust é possível criar dois tipos de variáveis; Imutável e Mutável (que são autoexplicativas)
+Em Rust é possível declarar variáveis de duas formas; _let_ (imutáveis) e _let mut_ (mutáveis). No próximo capítulo será apresentado mais duas formas.
 
 Declarando variável **imutável**
 
