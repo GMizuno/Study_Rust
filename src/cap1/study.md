@@ -5,7 +5,7 @@ Nesse capitulo será discutido sobre os conceitos básicos sobre Rust. Como por 
 - Tipos Primitivos (inteiros, float, char e string)
 - Type Inference
 - Display vs Debug
-- Mutabiity
+- Mutabiity e Shadowing
 - Algumas funções básicas
 
 ## Tipo Primitivos
@@ -130,7 +130,7 @@ println!("Size of a f32: {} bytes", std::mem::size_of::<f32>());
 println!("Size of a f64: {} bytes", std::mem::size_of::<f64>());
 ```
 
-### Type Inference
+## Type Inference
 
 O Type Inference em Rust é uma característica que permite ao compilador deduzir automaticamente o tipo de uma variável com base no contexto em que é usada, sem a necessidade de especificar explicitamente o tipo.
 
@@ -149,7 +149,7 @@ fn main() {
 }
 ```
 
-### Display vs Debug
+## Display vs Debug
 
 Em Rust alguns tipos são possuem o clássico _print_ (ou seja, não podem ser printadas). Para os tipos primitivos possuem a macro _println!_ que funcionará de forma similar ao _print_ em _Python_. Porém, para tipos mais complexo essa marco pode não funcionar, mas é possível criar implementar alguns _Traits_ para contornar esse problema.
 
@@ -176,7 +176,7 @@ fn main() {
 }
 ```
 
-OBS: Existe o {:#?} que pode ser entendido com pretty-print
+OBS: Existe o {:#?} que pode ser entendido com pretty-print e {:X} que retorna a representação hexadecimal (precisa implementar Trait _UpperHex_);
 
 ```rust
 #[derive(Debug)] // Derivando Debug para habilitar a formatação de depuração automaticamente
@@ -193,6 +193,12 @@ fn main() {
 
     println!("{:?}", pessoa);
     println!("{:#?}", pessoa);
+    // println!("{:X}", pessoa); => Da erro
+    println!("1 in hexdecimal is {:X}", 1);
+    println!("행 in hexdecimal is {:X}", '행' as u32);
+    println!("H in hexdecimal is {:X}", 'H' as u32);
+    println!("居 in hexdecimal is {:X}", '居' as u32);
+    println!("い in hexdecimal is {:X}", 'い' as u32);
 }
 ```
 
@@ -201,3 +207,32 @@ De forma resumida
 - {} — Display print. É usado para formatar um valor para exibição de usuário. Ele é mais voltado para apresentação amigável para humanos. Mais tipos têm Debug do que Display, então se um tipo que você deseja imprimir não puder imprimir com Display, você pode tentar Debug.
 - {:?}—Debug print. É usado para formatar um valor para a saída de depuração. Isso é útil para exibir o valor de uma variável durante a depuração do código
 - {:#?}—Debug print, mas bonito. Bonito significa que cada parte de um tipo é impressa em sua própria linha para facilitar a leitura.
+
+## Mutability e Shadowing
+
+Em Rust é possível criar dois tipos de variáveis; Imutável e Mutável (que são autoexplicativas)
+
+Declarando variável **imutável**
+
+```rust
+let my_number = 8;
+// my_number = 10 => Da erro
+```
+
+Declarando variável **mutável**
+
+```rust
+let mut my_number = 8;
+my_number = 10;
+```
+
+Além desse conceito, existe a ideia de _Shadowing_. Sombreamento significa usar _let_ para declarar uma nova variável com o mesmo nome de outra variável.
+
+No exemplo abaixo pode observar que o exemplo é bem parecido, mas existe uma pequena diferença na estrutura !!!!!
+
+```rust
+let my_number = 8;
+let my_number = 10 // Bem diferente do anteiro.
+```
+
+Na realidade my_number é "bindado" com novo valor, apontando para outro valor. Vale resaltar que valor 8 não é destruído
