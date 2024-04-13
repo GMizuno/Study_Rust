@@ -5,6 +5,7 @@ Nesse capitulo avançaremos em alguns outros conceitos básicos
 - Memória
 - _String_ e _&str_
 - _conts_ vs _let_ vs _static_
+- Exemplos de Referência e _Borrow_
 - _Trait_ Copy
 
 ## Memória
@@ -71,3 +72,52 @@ De maneira resumida, podemos usar _String_ ou _&str_ nos seguintes cenários
 
 - Use _String_ quando você precisa possuir e modificar a string dinamicamente. Uma String é uma string de propriedade que pode ser modificada, aumentada ou encolhida durante a execução do programa.
 - Use _&str_ quando você tem uma referência a uma sequência de caracteres, mas não precisa possuir ou modificar a string diretamente. Um _&str_ é uma fatia de uma sequência de caracteres e é imutável por padrão. Ele é útil quando você só precisa acessar ou passar uma referência a uma string existente, sem a necessidade de modificá-la.
+
+## _conts_ vs _let_ vs _static_
+
+Existem duas outras maneiras de declarar valores sem a palavra-chave let. Estas duas são conhecidas como _const_ e _static_. Outra diferença é que o Rust não usará _type inference_ para elas: **você precisa escrever o tipo delas**. Essas são para valores que não mudam (_const_ significa constante). Bem, tecnicamente, static pode mudar, mas aprenderemos sobre isso mais tarde. As duas principais diferenças são:
+
+- _const_ é para valores que não mudam e são criados em tempo de compilação.
+- _static_ é semelhante a const, mas tem uma localização de memória fixa. Pode não ser criado em tempo de compilação.
+- _static_ e _const_ são utéis para criar variáveis globais (melhores práticas são nomear as variáveis globais com letra maiúsculas)
+
+```rust
+const MY_CONTS_NUMBER: u32 = 12;
+static MY_STATIC_VECTOR: [&str; 4] = ["Spring", "Summer", "Fall", "Winter"];
+
+fn print_numbers() {
+    println!("My number is {} and my vector is {:?}", MY_CONTS_NUMBER, MY_STATIC_VECTOR)
+}
+
+fn main() {
+    print_numbers()
+}
+```
+
+## Referência
+
+Nessa seção vamos mostrar alguns exemplos sobre referência que serão importantes para os próximos capítulos.
+
+Exemplo 1 - Erro 'referência morta'
+
+```rust
+fn return_str() -> &String {
+    let country = String::from("Austria");
+    let country_ref = &country;
+    country_ref
+}
+
+fn main() {
+    let country = return_str();
+}
+```
+
+No exemplo acima, o compilador retornará o seguinte erro _returns a value referencing data owned by the current function_. Isso ocorre pois
+
+A função _return_str()_ cria uma _String_ e depois cria uma referência (ponteiro) para essa _String_. Em seguida, tenta retornar essa referência. No entanto, a _String_ atribuida á _country_ só existe dentro da função e depois é **descartada** (lembre-se, uma variável só existe enquanto o bloco de código (escopo) está em execução). Uma vez que uma variável desaparece, o computador limpa a memória para que ela possa ser usada para outra coisa. Portanto, depois que a função retorna, _country_ref_ estaria se **referindo a uma memória que já não existe**. Definitivamente não está certo! Rust impede que cometamos um erro de memória aqui. Esta é a parte importante sobre o tipo _"owned"_ que discutimos anteriormente. Porque você possui uma _String_, pode passá-la ao redor. Mas um _&String_ morrerá se sua _String_ morrer, e você não passa a propriedade com ele.
+
+Exemplo 2 - Mutable Reference
+
+```rust
+
+```
