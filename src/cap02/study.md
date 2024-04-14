@@ -142,3 +142,41 @@ De maneira mais formal, Rust tem duas regras para referências mutáveis e imut�
 - **Regra 2 (referências mutáveis)** - Você só pode ter uma referência mutável. Além disso, você não pode ter uma referência imutável e uma referência mutável juntas.
 
 Como as referências mutáveis podem alterar os dados, você poderia ter problemas se alterasse os dados quando outras referências estivessem lendo-os. Uma boa maneira de entender é pensar em uma apresentação feita com Powerpoint ou no Google Docs. Vamos analisar algumas situações de propriedade através de uma comparação com a vida real e determinar se estão ok ou não.
+
+## _Copy_ e _Clone_ _Trait_
+
+Em Rust, os tipos mais simples (inteiros, float, char e &str) são conhecidos como tipos _Copy_ (implementam a _Trait_ _Copy_). Eles estão todos na _stack_ e o compilador sabe o tamanho deles. Isso significa que são muito fáceis de copiar, então o compilador sempre copia seus dados quando você envia esses tipos para uma função. Os tipos Copy são tão pequenos e simples que não há motivo para não copiá-los.
+
+Exemplo 1 - Erro
+
+```rust
+fn print_string(s: String){
+    println!("{}", s)
+}
+
+fn main() {
+    let my_string = String::from("Asdadasda asadd");
+    print_string(my_string);
+    println!("{}",my_string)
+}
+```
+
+Esse erro ocorre porque estamos tentando usar _my_string_ após ela ter sido movida para a função _print_string()_. Em Rust, quando você passa um valor para uma função, ele pode ser movido para a função, o que significa que o valor original não está mais disponível no escopo atual. Como _String_ não implementa o trait _Copy_, ele sofre um _move_ em vez de _Copy_ quando passado para a função. Nesse caso dizemos que _my_string_ perde o _ownership_.
+
+Para contornar esse tipo de problema, existe outra _Trait_ chamada de _Clone_. De forma mais informal _Clone_ é semelhante a _Copy_, mas geralmente requer mais memória. Além disso, você precisa chamar _.clone()_ explicitamente - ele não será clonado automaticamente da mesma forma que os tipos _Copy_ se copiam sozinhos.
+
+Exemplo 2 - Corrigindo Exemplo 2
+
+```rust
+fn print_string(s: String){
+    println!("{}", s)
+}
+
+fn main() {
+    let my_string = String::from("Asdadasda asadd");
+    print_string(my_string.clone());
+    println!("{}",my_string)
+}
+```
+
+Dessa forma podemos usar a seguinte regra geral: se você puder usar uma referência imutável, opte por isso. Você não terá que se preocupar com uma função assumindo a propriedade de alguns dados: a função simplesmente dará uma olhada e terminará. Para funções, se você não precisar transferir a propriedade, uma referência é sempre a opção mais fácil!
