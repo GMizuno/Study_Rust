@@ -118,6 +118,27 @@ A função _return_str()_ cria uma _String_ e depois cria uma referência (ponte
 
 Exemplo 2 - Mutable Reference
 
-```rust
+Esse exemplo explicará mais sobre referência e mutabilidade
 
+```rust
+let mut my_number = 8;
+let num_ref = &mut my_number;
+*num_ref += 10;
+println!("{}", my_number);
+let second_number = 800;
+let triple_reference = &&&second_number;
+println!("Are they equal? {}", second_number == ***triple_reference);
 ```
+
+No exmeplo acima _my_number_ é um i32, e _num_ref_ é &mut i32. Em linguagem informal, você chama isso de "referência mutável para um i32" ou "ref mut i32".
+
+Em seguinda adicionamos 10 a _my_number_. No entanto, você não pode escrever num_ref += 10 porque num_ref não é o valor i32; é uma &i32. Não há nada para adicionar dentro de uma referência. O valor a ser adicionado está realmente dentro do i32. Para chegar ao local onde o valor está, usamos \*. Usar \* permite que você vá da referência para o valor por trás da referência. Em outras palavras, \_ é o oposto de &. Além disso, um \_ apaga um &.
+
+O Exemplo 2 demonstra dois conceitos (mutabiliade e referência). Ele usa \* para alterar o valor de um número através de uma referência mutável e mostra que um \* equivale a um &.
+
+De maneira mais formal, Rust tem duas regras para referências mutáveis e imutáveis. Elas são muito importantes, mas fáceis de lembrar porque fazem sentido:
+
+- **Regra 1 (referências imutáveis)** - Você pode ter quantas referências imutáveis quiser: 1 está bem, 3 estão bem, 1.000 estão bem. Não há problema porque você está apenas visualizando os dados.
+- **Regra 2 (referências mutáveis)** - Você só pode ter uma referência mutável. Além disso, você não pode ter uma referência imutável e uma referência mutável juntas.
+
+Como as referências mutáveis podem alterar os dados, você poderia ter problemas se alterasse os dados quando outras referências estivessem lendo-os. Uma boa maneira de entender é pensar em uma apresentação feita com Powerpoint ou no Google Docs. Vamos analisar algumas situações de propriedade através de uma comparação com a vida real e determinar se estão ok ou não.
