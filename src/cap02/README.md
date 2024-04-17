@@ -181,4 +181,4 @@ fn main() {
 
 Dessa forma podemos usar a seguinte regra geral: se você puder usar uma referência imutável, opte por isso. Você não terá que se preocupar com uma função assumindo a propriedade de alguns dados: a função simplesmente dará uma olhada e terminará. Para funções, se você não precisar transferir a propriedade, uma referência é sempre a opção mais fácil!
 
-![image](img/cap2/move_string.png)
+![image](img/move_string.png)
