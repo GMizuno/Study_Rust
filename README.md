@@ -24,9 +24,9 @@ Dentro de cada pasta _capXX_ terá um arquivo README.md contendo um breve resumo
 
 Lista de capítulo finalizados e com documentação;
 
-- ![Capítulo 1](src/cap01/README.md)
-- ![Capítulo 2](src/cap02/README.md)
-- ![Capítulo 3](src/cap03/README.md)
+- [Capítulo 1](src/cap01/README.md)
+- [Capítulo 2](src/cap02/README.md)
+- [Capítulo 3](src/cap03/README.md)
 
 ## Contribuições
 
