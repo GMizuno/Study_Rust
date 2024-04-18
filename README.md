@@ -1,6 +1,5 @@
 # Study Rust
 
-
 Este repositório é dedicado ao armazenamento de código em Rust, uma linguagem de programação moderna e eficiente, conhecida por sua segurança e desempenho.
 
 ## Referência Principal: Learn Rust in a Month of Lunches
@@ -18,6 +17,16 @@ Além de aprender Rust, também exploraremos maneiras de integrar o código Rust
 ## Execução de Códigos
 
 Para executar os códigos, faremos uso do playground online oficial de [ Rust: Rust Playground](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021). Isso nos proporcionará um ambiente de desenvolvimento rápido e fácil para experimentar e testar nossas implementações em Rust.
+
+## Material de estudo
+
+Dentro de cada pasta _capXX_ terá um arquivo README.md contendo um breve resumo do capítulo com exemplos.
+
+Lista de capítulo finalizados e com documentação;
+
+- ![Capítulo 1](src/cap01/README.md)
+- ![Capítulo 2](src/cap02/README.md)
+- ![Capítulo 3](src/cap03/README.md)
 
 ## Contribuições
 

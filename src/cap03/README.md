@@ -1,6 +1,6 @@
 # Capitulo 3
 
-Nesse capítulo aprofundaremos os estudos sobre tipo, aprederemos sobre _Array_, _Vector e \_Tuple_. Além desses tópicos, iniciaremos as discussões sobre controle de fluxo (_Control Flow_).
+Nesse capítulo aprofundaremos os estudos sobre tipo, aprederemos sobre _Array_, _Vector_ e _Tuple_. Além desses tópicos, iniciaremos as discussões sobre controle de fluxo (_Control Flow_).
 
 - Array
 - Vector
@@ -40,15 +40,17 @@ println!(
 )
 ```
 
-Exemplo 1 - Slicing
+Exemplo 2 - Slicing
 
 ```rust
+
 let array_of_ten = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-let two_to_five = &array_of_ten[2..5];
-let start_at_one = &array_of_ten[1..];
-let end_at_five = &array_of_ten[..5];
-let everything = &array_of_ten[..];
-let two_to_five_inclusive = &array_of_ten[2..=5];
+let two_to_five = &array_of_ten[2..5]; // Acesando do index 2 ate 4
+let start_at_one = &array_of_ten[1..]; // Acessando do index 1 ate final
+let end_at_five = &array_of_ten[..5]; // Acessando do index 0 ate 4
+let everything = &array_of_ten[..]; // acessando tudo
+let two_to_five_inclusive = &array_of_ten[2..=5]; // Acessando do index 2 ate 5
+
 println!("Two to five: {two_to_five:?}");
 println!("Start at one: {start_at_one:?}");
 println!("End at five: {end_at_five:?}");
