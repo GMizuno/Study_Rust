@@ -58,13 +58,12 @@ fn main() {
     println!("Sixth item: {:?}", random_tuple.5);
 
     let strings = ("one".to_string(), "two".to_string(), "three".to_string());
-    let (a, b, c) = strings;
+    let (a, b, c) = strings; // Destructuring
     println!("{b}");
     // println!("{strings:?}"); Da erro String nao tem Copy
 
     let integers = (1, 2, 3);
-    let (a, b, c) = integers;
+    let (a, b, c) = integers; // Destructuring
     println!("{b}");
-    println!("{integers:?}"); // Int tem Copy
-
+    println!("{integers:?}"); // Tuple tem Copy
 }

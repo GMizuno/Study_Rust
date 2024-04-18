@@ -59,3 +59,85 @@ println!("Two to five (inclusive): {two_to_five_inclusive:?}");
 ```
 
 ## Vector
+
+Exemplo X - Criando Vector
+
+```rust
+let name1 = String::from("Gabriel");
+let name2 = String::from("Mizuno");
+
+let mut my_vec = Vec::new();
+my_vec.push(name1);
+my_vec.push(name2);
+println!("My Vector {my_vec:?}");
+```
+
+Exemplo X - Vector é homogeneo
+
+```rust
+let mut my_vec = vec![String::from("Gabriel"), String::from("Mizuno")];
+
+my_vec.push(1) // Erro
+```
+
+Exemplo X - Slicing Vector
+
+```rust
+let my_vec1 = vec![8, 10, 10];
+println!("My Vector2 {my_vec1:?}");
+let vec_of_ten = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+let vec_three_to_five = &vec_of_ten[2..5];
+let vec_start_at_two = &vec_of_ten[1..];
+let vec_end_at_five = &vec_of_ten[..5];
+let vec_everything = &vec_of_ten[..];
+
+println!("Three to five: {vec_three_to_five:?}");
+println!("start at two: {vec_start_at_two:?}");
+println!("end_at_five: {vec_end_at_five:?}");
+println!("Everything: {vec_everything:?}");
+```
+
+## Tuple
+
+Exemplo X - Criando Tuple
+
+```rust
+let random_tuple = ("Here is a name", 8, vec!['a'], 'b', [8, 9, 10], 7.7);
+println!("Inside the tuple is: First item: {:?}", random_tuple.0);
+println!("Second item: {:?}", random_tuple.1);
+println!("Third item: {:?}", random_tuple.2);
+println!("Fourth item: {:?}", random_tuple.3);
+println!("Fifth item: {:?}", random_tuple.4);
+println!("Sixth item: {:?}", random_tuple.5);
+```
+
+Exemplo X - Destructuring
+
+```rust
+let strings = ("one".to_string(), "two".to_string(), "three".to_string());
+let (a, b, c) = strings;
+println!("{b}");
+```
+
+Exemplo X - Copy
+
+```rust
+fn print_number(number: i32){
+    println!("My number is {}", number)
+}
+
+fn print_str(str: &str){
+    println!("My string is {}", str)
+}
+
+fn main() {
+    let my_tuple = ("one".to_string(), "two".to_string(), "three".to_string(), 8);
+    let (a, b, c, d) = my_tuple;
+    print_str(b);
+    print_number(d);
+    println!("{b}"); // Funciona pois &str tem Copy
+    println!("{d}"); // Funciona pois i32 tem Copy
+    println!("{my_tuple:?}"); // Nao funciona pois Tuple não tem Copy
+}
+
+```
