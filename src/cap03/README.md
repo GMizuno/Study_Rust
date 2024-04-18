@@ -27,12 +27,12 @@ println!("my_array_integer {:?}, my_array_string {:?}", my_array_integer, my_arr
 Dentre as principais operações envolvendo _Array_ temos _Slice_, _len_, _iter_ (que será explicado em outra seção).
 
 ```rust
-fn main() {
-    let my_array_integer = [1, 2, 3, 4, 5];
-    println!(
-        "my_array_integer index 0 {:?}, my_array_integer tem tamanho {}",
-        my_array_integer[0],
-        my_array_integer.len()
-    )
-}
+let my_array_integer = [1, 2, 3, 4, 5];
+println!(
+    "my_array_integer index 0 {:?}, my_array_integer tem tamanho {}",
+    my_array_integer[0],
+    my_array_integer.len()
+)
 ```
+
+## Vector
