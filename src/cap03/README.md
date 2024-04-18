@@ -11,7 +11,7 @@ Nesse capítulo aprofundaremos os estudos sobre tipo, aprederemos sobre _Array_,
 ## Colections
 
 _Collections_ são uma estrutura de dados que geralmente são usadas quando você tem mais de um valor e deseja armazená-los em um único lugar com algum tipo de ordem, são equivalentes a _Lists_ em _Python_.
-Existem diversas _collection_ em Rust, as mais conhecidas são _Array_, _Vector_ e _Tuple_, já _Hash_ e _BinaryHeap_ são outros tipos de _colletions_ mais complexos em Rust como )
+Existem diversas _collection_ em Rust, as mais conhecidas são _Array_, _Vector_ e _Tuple_, já _Hash_ e _BinaryHeap_ são outros tipos de _collections_ mais complexos em Rust como )
 
 ## Array
 
