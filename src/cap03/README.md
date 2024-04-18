@@ -22,9 +22,14 @@ let my_array_integer = [1, 2, 3, 4, 5]; // [i32; 5]
 let my_array_string = ["1", "Two", "3"]; // [&str; 3]
 
 println!("my_array_integer {:?}, my_array_string {:?}", my_array_integer, my_array_string)
+
+let my_array_string2 = ["a"; 5];
+println!("My Array {:?}", my_array_string2);
 ```
 
 Dentre as principais operações envolvendo _Array_ temos _Slice_, _len_, _iter_ (que será explicado em outra seção).
+
+Exemplo 1 - Index e Len
 
 ```rust
 let my_array_integer = [1, 2, 3, 4, 5];
@@ -33,6 +38,22 @@ println!(
     my_array_integer[0],
     my_array_integer.len()
 )
+```
+
+Exemplo 1 - Slicing
+
+```rust
+let array_of_ten = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+let two_to_five = &array_of_ten[2..5];
+let start_at_one = &array_of_ten[1..];
+let end_at_five = &array_of_ten[..5];
+let everything = &array_of_ten[..];
+let two_to_five_inclusive = &array_of_ten[2..=5];
+println!("Two to five: {two_to_five:?}");
+println!("Start at one: {start_at_one:?}");
+println!("End at five: {end_at_five:?}");
+println!("Everything: {everything:?}");
+println!("Two to five (inclusive): {two_to_five_inclusive:?}");
 ```
 
 ## Vector
