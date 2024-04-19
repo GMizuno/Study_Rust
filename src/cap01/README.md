@@ -19,7 +19,7 @@ Em Rust existe algum tipo muito básicos, chamados de Tipos Primitivos. Dentre e
 
 ### Inteiros
 
-No momento em que escreve esse material isize equivale ao _i32_ e usize equivale eao _u32_.
+No momento em que escreve esse material _isize_ equivale a _i32_ e _usize_ equivale ao _u32_.
 
 Os intervalos para Inteiros são
 
