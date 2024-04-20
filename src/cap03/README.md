@@ -146,6 +146,10 @@ fn main() {
 
 Exemplo X - Criando Tuple
 
+Uma tupla é uma estrutura de dados que pode conter um número fixo de elementos de tipos diferentes. Em Rust, cada posição em uma tupla pode ter um tipo **diferente**.
+
+Exemplo 1 - Criando Tuples
+
 ```rust
 let random_tuple = ("Here is a name", 8, vec!['a'], 'b', [8, 9, 10], 7.7);
 println!("Inside the tuple is: First item: {:?}", random_tuple.0);
@@ -156,15 +160,29 @@ println!("Fifth item: {:?}", random_tuple.4);
 println!("Sixth item: {:?}", random_tuple.5);
 ```
 
-Exemplo X - Destructuring
+Em Rust, existe conceito chamado _Destructuring_ que consiste em descompactar os valores de estruturas de dados complexas, como tuples, arrays ou structs, em variáveis individuais. Dentre as estuturas vistas ate momento, Tuple, Array e Struct possuem essa característica1.
+
+Exemplo 2 - Destructuring Tuple e Array
 
 ```rust
-let strings = ("one".to_string(), "two".to_string(), "three".to_string());
-let (a, b, c) = strings;
+let tuple_string = ("one".to_string(), "two".to_string(), "three".to_string());
+let arr = [1, 2, 3, 4, 5];
+println!("Destructuring Tuple");
+let (a, b, c) = tuple_string;
+println!("{1}");
 println!("{b}");
+println!("{c}");
+println!("Destructuring Array");
+let [x, y, z, _, _] = arr;
+
+println!("x: {x}");
+println!("y: {y}");
+println!("z: {z}");
 ```
 
-Exemplo X - Copy
+Tuplas não implementam _Trait_ de _Copy_
+
+Exemplo 3 - Copy
 
 ```rust
 fn print_number(number: i32){
@@ -186,3 +204,104 @@ fn main() {
 }
 
 ```
+
+---
+
+## Control Flow
+
+O controle de fluxo mais simples em Rust é o if seguido de `{}`. Rust executará o código dentro de `{}` se a condição for verdadeira e não fará nada caso contrário. Você pode adicionar mais condições com `&&` (e) e `||` (ou).
+
+Exemplo 1 - Controle Flow básico
+
+```rust
+let my_number = 5;
+if my_number == 7 {
+    println!("It's seven");
+} else if my_number == 6 {
+    println!("It's six");
+} else if my_number == 5 {
+    println!("It's five");
+}
+
+if my_number % 2 == 1 && my_number > 0 {
+    println!("It's a positive odd number");
+} else if my_number == 6 {
+    println!("It's six")
+} else {
+    println!("It's a different number")
+}
+```
+
+Você já pode perceber que o uso excessivo de `if`, `else` e `else if` pode tornar o código difícil de ler. Nesse caso, você pode usar `match`, que fica muito mais limpo. Mas o Rust vai exigir que você faça um `match` **para todas as situações possíveis e não vai compilar o código de outra forma.**
+
+Exemplo 2 - Match
+
+```rust
+let my_number2: u8 = 5;
+match my_number2 {
+    0 => println!("it's zero"),
+    1 => println!("it's one"),
+    2 => println!("it's two"),
+    _ => println!("It's some other number"), // Nao roda sem esse caso pois compilador vai procurar por todas as opcoes em u6 (0 ate 255)
+}
+```
+
+Exemplo 3 - Match mais complexo
+
+```rust
+let sky = "cloudy";
+let temperature = "warm";
+match (sky, temperature) {
+    ("cloudy", "cold") => println!("It's dark and unpleasant today"),
+    ("clear", "warm") => println!("It's a nice day"),
+    ("cloudy", "warm") => println!("It's dark but not bad"),
+    _ => println!("Not sure what the weather is."),
+}
+```
+
+## Loops
+
+Com _loops_, você pode instruir o Rust a repetir algo até que você diga para parar. A _keyword_ `loop` permite que você inicie um loop que não para a menos que você indique ao código quando quebrar.
+
+```rust
+let mut counter = 0;
+loop {
+    counter += 1;
+    println!("The counter is now: {counter}");
+    if counter == 5 {
+        break;
+    }
+}
+```
+
+Outras formas mais simples e eficientes. Dentre eles existem as _keywords_ `while` e `for`
+
+```rust
+let mut counter = 0;
+while counter < 5 {
+    counter += 1;
+    println!("The new counter is now: {counter}");
+}
+
+for number in 0..3 { // vai de 0 ate 2
+    println!("The number is : {number}")
+}
+
+println!("New loop");
+
+for number in 0..=3 { // vai de 0 ate 3
+    println!("The number is : {number}")
+}
+```
+
+Em outra seção será mostrado alguns exemplo e conceitos que conectam _Collection_ e _loops_, explicando como iterar sobre um _collection_.
+
+## Resumo
+
+- _Arrays_ são extremamente rápidos, mas têm um tamanho fixo e um único tipo.
+- Vetores são um pouco como _Strings_: são tipos de propriedade e muito flexíveis.
+- As tuplas contêm itens que podem ser acessados com números, mas agem mais como novos tipos próprios do que coleções indexadas.
+- Usar `match` pode tornar seu código realmente legível.
+- Rust garante que você faça um `match` para tudo em uma declaração `match`.
+- A destruturação é poderosa: permite que você desmonte tipos de quase qualquer maneira que desejar.
+- Ranges são uma forma legível para expressar quando algo começa e quando termina.
