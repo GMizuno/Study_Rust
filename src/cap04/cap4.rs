@@ -15,6 +15,12 @@ enum Climate {
     Polar,
 }
 
+struct Country {
+    population: u32,
+    capital: String,
+    leader_name: String,
+}
+
 struct Country2 {
     population: u32,
     capital: String,
@@ -70,12 +76,6 @@ fn main() {
     let size_and_color = SizeAndColor {
         size: 150,
         color: my_color,
-    };
-
-    struct Country {
-        population: u32,
-        capital: String,
-        leader_name: String,
     };
 
     let kalmykia = Country {
