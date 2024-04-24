@@ -1,4 +1,3 @@
-
 enum Mood {
     Happy,
     Sleepy,
@@ -31,7 +30,6 @@ enum Star {
     RedGiant = 1000,
     DeadStar,
 }
-
 
 fn main() {
     let my_mood = Mood::Happy;
