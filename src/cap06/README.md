@@ -9,13 +9,13 @@ Nessa seção será apresentado algumas _collections_ mais complexas e o operado
 - Operador ?
 - _panic!_ e _unwarp_
 
-Nessa seção não será discutido muita operações e conceito teoricos das _collection_.
+Nessa seção não será discutido muita operações e conceito teoricos das _collection_, muitas das operções possuem nomes intuitivos e simples de entender.
 
 ---
 
 ## HashMap e BTreeMap
 
-- HashMap: É uma coleção de pares chave-valor onde todas as chaves devem ser únicas. Ela armazena os elementos em uma estrutura de tabela de dispersão, o que permite acesso rápido aos valores com base em suas chaves.
+- HashMap: É uma _collection_ de pares chave-valor onde todas as chaves devem ser únicas. Ela armazena os elementos em uma estrutura de tabela de dispersão, o que permite acesso rápido aos valores com base em suas chaves.
 
 - BTreeMap: Similar ao HashMap, mas armazena os elementos em uma árvore de busca binária balanceada (B-tree), que mantém os elementos ordenados por chave.
 
@@ -83,7 +83,7 @@ fn main() {
 
 ## HashSet e BTreeSet
 
-- HashSet: É uma coleção de elementos únicos, sem uma ordem específica. Ela usa uma tabela de dispersão para garantir a unicidade dos elementos.
+- HashSet: É uma _collection_ de elementos únicos, sem uma ordem específica. Ela usa uma tabela de dispersão para garantir a unicidade dos elementos.
 - BTreeSet: Similar ao HashSet, mas armazena os elementos em uma árvore de busca binária balanceada, mantendo-os ordenados.
 
 ```rust
@@ -152,3 +152,40 @@ fn main() {
     }
 }
 ```
+
+## Operador ?
+
+O operador `?` é de fato uma maneira concisa de lidar com tipos `Result` e `Option` em Rust. Veja como funciona:
+
+- Ele fornece o valor dentro do `Result` se for `Ok`.
+- Ele passa o erro de volta se for `Err`, efetivamente causando um retorno antecipado.
+
+Este operador simplifica o tratamento de erros propagando automaticamente os erros pela pilha de chamadas. Embora seja usado principalmente com `Result`, também funciona com `Option`.
+
+**OBS:** O operador `?` também funciona com Option, embora na maioria das vezes você o veja sendo usado para lidar com um Result.
+
+Vamos ver um exemplo de uso do operador `?` com `.parse()`:
+
+```rust
+fn parse_and_log_str(input: &str) -> Result<i32, std::num::ParseIntError> {
+    let parsed_number = input.parse()?;
+    println!("Número parseado com sucesso: {}", parsed_number);
+    Ok(parsed_number)
+}
+
+fn main() {
+    let result = parse_and_log_str("42");
+    match result {
+        Ok(numero) => println!("Número parseado: {}", numero),
+        Err(erro) => println!("Erro: {}", erro),
+    }
+}
+```
+
+Neste exemplo:
+
+- A função `parse_and_log_str` tenta converter uma string em um `i32`.
+- Se for bem-sucedida, ela imprime uma mensagem indicando sucesso e retorna o número parseado.
+- Se a análise falhar, o operador `?` retornará antecipadamente com o erro.
+
+Usar o operador `?` elimina a necessidade de declarações `match` ou `if let` explícitas para lidar com erros, tornando o código mais conciso e legível.
