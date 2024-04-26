@@ -265,9 +265,8 @@ fn main() {
 
 ## Resumo
 
-Se você tem muitos tipos e deseja que todos tenham os mesmos métodos, escreva um trait.
-Tipos que implementam um trait serão todos diferentes. Mas todos eles têm garantia de ter os métodos do trait.
-Da mesma forma, cada pessoa que fala um idioma será diferente. Mas todos eles têm garantia de conhecer o idioma.
-Você pode implementar seus traits em tipos de outras pessoas. Você pode implementar traits de outras pessoas em seus tipos. Mas você não pode implementar traits de outras pessoas em tipos de outras pessoas.
-O trait From é bastante simples e você o vê em toda parte. Verifique a origem do código se estiver curioso sobre como é feito para um tipo específico.
-Receber um AsRef
+- Se você tem muitos tipos e deseja que todos tenham os mesmos métodos, escreva um trait.
+- Tipos que implementam um trait serão todos diferentes. Mas todos eles têm garantia de ter os métodos do trait.
+  -Da mesma forma, cada pessoa que fala um idioma será diferente. Mas todos eles têm garantia de conhecer o idioma.
+- Você pode implementar seus traits em tipos de outras pessoas. Você pode implementar traits de outras pessoas em seus tipos. Mas você não pode implementar traits de outras pessoas em tipos de outras pessoas.
+- O trait From é bastante simples e você o vê em toda parte. Verifique a origem do código se estiver curioso sobre como é feito para um tipo específico.
