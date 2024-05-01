@@ -176,11 +176,60 @@ Esses métodos são úteis para operações de busca e filtragem em coleções e
 
 ## _.cycle()_, _.fold()_ e _.zip()_
 
-ZIP ESTA NO CAPITULO ANTERIOR OLHAR EM NA PAGINA 166
-ZIP ESTA NO CAPITULO ANTERIOR OLHAR EM NA PAGINA 166
-ZIP ESTA NO CAPITULO ANTERIOR OLHAR EM NA PAGINA 166
-ZIP ESTA NO CAPITULO ANTERIOR OLHAR EM NA PAGINA 166
-ZIP ESTA NO CAPITULO ANTERIOR OLHAR EM NA PAGINA 166
+#### 1. `.cycle()`:
+
+A função `.cycle()` é usada para criar um iterador que repete infinitamente os elementos de um iterador original. Isso é útil quando você precisa iterar continuamente sobre os elementos de uma coleção.
+
+Exemplo:
+
+Exemplo 1 - Uso básico de cycle
+
+```rust
+let numbers = vec![1, 2, 3];
+let mut cycle_iter = numbers.iter().cycle();
+
+for _ in 0..5 {
+    println!("{}", cycle_iter.next().unwrap());
+}
+```
+
+Neste exemplo, o iterador `cycle_iter` irá repetir infinitamente os elementos do vetor `numbers`.
+
+#### 2. `.fold()`:
+
+A função `.fold()` é usada para reduzir uma sequência de elementos em um único valor, aplicando uma função acumuladora a cada elemento e mantendo um estado acumulado.
+
+Exemplo 2 - Uso básico de fold
+
+```rust
+let numbers = vec![1, 2, 3, 4, 5];
+let sum = numbers.iter().fold(0, |acc, &x| acc + x);
+
+println!("Soma: {}", sum);
+```
+
+Neste exemplo, a função `.fold()` é usada para calcular a soma de todos os elementos no vetor `numbers`.
+
+#### 3. `zip()`:
+
+A função `zip()` é usada para combinar dois iteradores em um único iterador, produzindo tuplas com um elemento de cada iterador em cada iteração.
+
+Exemplo 3 - Uso básico de zip
+
+```rust
+let numbers = vec![1, 2, 3];
+let letters = vec!['a', 'b', 'c'];
+
+for (num, letter) in numbers.iter().zip(letters.iter()) {
+    println!("{} {}", num, letter);
+}
+```
+
+Neste exemplo, a função `zip()` é usada para combinar os iteradores `numbers.iter()` e `letters.iter()` em um único iterador, produzindo tuplas com um número e uma letra em cada iteração.
+
+Espero que essas explicações e exemplos tenham sido úteis! Se precisar de mais alguma coisa ou tiver alguma dúvida, estou à disposição para ajudar.
+
+Exemplo 4 - Usando _HashMap_ e _zip_
 
 ```rust
 use std::collections::HashMap;
@@ -198,3 +247,13 @@ fn main() {
     );
 }
 ```
+
+No exemplo acima temos os seguintes pontos:
+
+- No exemplo, `some_keys` e `some_values` são vetores de dados quevocê deseja combinar para criar um mapa de chave-valor.
+- `into_iter()` é usado para converter os vetores em iteradores quepossam ser consumidos. `into_iter()` é uma variante do iterador queconsome o vetor original, transferindo a propriedade dos seuselementos para o iterador.
+- `collect()` é usado para coletar os elementos iterados ecombiná-los em uma coleção de destino. Neste caso, estamos coletandoos elementos em um `HashMap`.
+- `zip()` é usado para combinar dois iteradores em um único iterador,produzindo tuplas com um elemento de cada iterador em cada iteração.
+- Por fim, `some_keys.into_iter().zip(some_values.into_iter())`cria um iterador que produz tuplas onde o primeiro elemento éretirado de `some_keys` e o segundo elemento é retirado de `some_values`.
+
+Então, basicamente, o exemplo está combinando as chaves e valores dos vetores `some_keys` e `some_values` para criar um mapa de chave-valor usando iterators e a função `zip()`.
