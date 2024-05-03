@@ -6,6 +6,8 @@ Como vimos no último capítulo, com as _closures_ você pode 'encadear' método
 - _.any()_ e _.all()_
 - _.cycle()_, _.fold()_ e _.zip()_
 
+Parte dos exemplo ainda não estão nos arquivos cap9_1.rs e cap9_2.rs
+
 ## _.filter() _ e _.filter_map()_
 
 Além do _map_, filtragem é outra aplicação comum para iteradores. Enquanto o _map_ permite fazer algo com cada item e passá-lo adiante, a filtragem permite manter apenas os itens que correspondem a uma determinada condição. O método .filter() permite isso, mantendo os itens com base em uma expressão que retorna um booleano.
@@ -257,3 +259,11 @@ No exemplo acima temos os seguintes pontos:
 - Por fim, `some_keys.into_iter().zip(some_values.into_iter())`cria um iterador que produz tuplas onde o primeiro elemento éretirado de `some_keys` e o segundo elemento é retirado de `some_values`.
 
 Então, basicamente, o exemplo está combinando as chaves e valores dos vetores `some_keys` e `some_values` para criar um mapa de chave-valor usando iterators e a função `zip()`.
+
+## Resumo
+
+- Mapear, filtrar e coletar é provavelmente o uso mais comum de iteradores.
+- Os métodos mais comuns para encontrar itens são .any(), .all(), .find() e .position(). Métodos como .any() causam curto-circuito, então certifique-se de usar .rev() o iterador se você achar que um item pode estar mais próximo do final do seu iterador.
+- O método .fold() é bem parecido com método reduce em Python.
+- Alguns métodos como .zip() e .enumerate() permitem combinar ou expandir os itens existentes em um iterador.
+  `
