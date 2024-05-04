@@ -179,6 +179,6 @@ No exemplo, a estrutura `Adventurer` é definida com um parâmetro de vida `'a`,
 
 Então, ao adicionar `<'_>` nos métodos `impl` para `Adventurer`, você está dizendo ao compilador para inferir o tempo de vida da referência `name` com base no tempo de vida da instância de `Adventurer` que está sendo usada. Isso permite que o código compile sem erros, pois o compilador é capaz de determinar corretamente a vida útil das referências.
 
-Se você remover `<'_>` dos métodos `impl`, o compilador não será capaz de inferir o tempo de vida da referência `name` e retornará um erro, exigindo que você especifique o tempo de vida de maneira explícita. Isso ocorre porque o tempo de vida dos métodos precisa corresponder ao tempo de vida da estrutura em que estão sendo implementados. Ao adicionar `<'_>`, você delega essa tarefa de inferência ao compilador, tornando o código mais conciso e menos propenso a erros ao alterar a estrutura no futuro.
+Se você remover `<'_>` dos métodos `impl`, o compilador não será capaz de inferir o tempo de vida da referência `name` e retornará um erro, exigindo que você especifique o tempo de vida de maneira explícita. Isso ocorre porque o tempo de vida dos métodos precisa corresponder ao tempo de vida da struct em que estão sendo implementados. Ao adicionar `<'_>`, você delega essa tarefa de inferência ao compilador, tornando o código mais conciso e menos propenso a erros ao alterar a estrutura no futuro.
 
 OBS: Remover todos os parâmetros de vida não resolve o problema.
