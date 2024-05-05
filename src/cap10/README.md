@@ -484,3 +484,32 @@ let mut write1 = my_rwlock.write().unwrap();
 - O método `try_write()` é usado para tentar adquirir um acesso de escrita.
 - Se for bem-sucedido, o valor é incrementado em 10 e impresso.
 - Se não for bem-sucedido, uma mensagem de erro é impressa.
+
+## Casos de Uso
+
+### 1. **Compartilhamento de Dados em Ambientes Concorrentes:**
+
+- As estruturas de dados mencionadas são úteis quando você precisa compartilhar dados entre threads em um ambiente concorrente.
+- Por exemplo, você pode usar `Mutex` ou `RwLock` para proteger um recurso compartilhado e garantir que apenas um thread o acesse por vez.
+
+### 2. **Cache com Mutex:**
+
+- Você pode implementar um cache em um ambiente concorrente usando um `Mutex` para proteger o acesso aos dados armazenados em cache.
+- Cada thread que deseja acessar ou atualizar o cache adquire o bloqueio do Mutex antes de realizar operações de leitura ou escrita.
+
+### 3. **Contagem de Acessos com RefCell:**
+
+- `RefCell` é útil quando você precisa de mutabilidade interna em uma estrutura imutável, como em contadores de acessos.
+- Por exemplo, você pode usar `RefCell` para contar quantas vezes uma função é chamada, permitindo acesso mutável ao contador de acessos dentro da função.
+
+### 4. **Atomicidade de Operações com Cell:**
+
+- `Cell` pode ser usado para garantir atomicidade em operações em variáveis compartilhadas entre threads.
+- Por exemplo, você pode usar `Cell` para implementar uma variável global que é atualizada por várias threads de forma segura.
+
+### 5. **Leitura-escrita de Dados com RwLock:**
+
+- `RwLock` é útil quando você tem um conjunto de dados que é frequentemente lido, mas raramente escrito.
+- Por exemplo, em um aplicativo da web, você pode usar `RwLock` para proteger o acesso a um banco de dados onde a leitura de dados é comum, mas a gravação de dados é menos frequente.
+
+Esses são apenas alguns exemplos de casos de uso práticos para as estruturas `Cell`, `RefCell`, `Mutex` e `RwLock` em Rust. Elas são poderosas ferramentas para lidar com a mutabilidade interna e garantir a segurança do acesso concorrente aos dados em programas Rust.
