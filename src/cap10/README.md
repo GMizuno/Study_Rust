@@ -182,3 +182,305 @@ Então, ao adicionar `<'_>` nos métodos `impl` para `Adventurer`, você está d
 Se você remover `<'_>` dos métodos `impl`, o compilador não será capaz de inferir o tempo de vida da referência `name` e retornará um erro, exigindo que você especifique o tempo de vida de maneira explícita. Isso ocorre porque o tempo de vida dos métodos precisa corresponder ao tempo de vida da struct em que estão sendo implementados. Ao adicionar `<'_>`, você delega essa tarefa de inferência ao compilador, tornando o código mais conciso e menos propenso a erros ao alterar a estrutura no futuro.
 
 OBS: Remover todos os parâmetros de vida não resolve o problema.
+
+## Interior Mutability
+
+O conceito de Interior Mutability em Rust refere-se à capacidade de modificar o conteúdo de um valor aparentemente imutável de forma segura. Isso é importante porque Rust tem regras rígidas de mutabilidade para garantir a segurança do acesso concorrente aos dados.
+
+Imagine que você tem uma estrutura imutável, mas ainda assim deseja modificar um campo interno (atributo) dessa struct. Uma forma de fazer isso seria permitir que a estrutura seja mutável como um todo, mas isso pode introduzir riscos de segurança. Então, em vez disso, Rust fornece esses tipos que permitem a mutabilidade interna, desde que as regras de propriedade sejam respeitadas.
+
+Então, o conceito de "Interior Mutability" em Rust nos permite alcançar mutabilidade dentro de estruturas que, de outra forma, seriam imutáveis, mantendo a segurança de acesso aos dados.
+
+Em Rust, temos tipos como `Cell`, `RefCell`, `Mutex` e `RwLock` para lidar com a mutabilidade interna. Vou explicar cada um deles:
+
+### 1. **Cell**:
+
+`Cell` é uma estrutura de dados que fornece mutabilidade interna mesmo quando o dono da `Cell` é imutável. Porém, você só pode armazenar tipos que implementam `Copy` dentro de uma `Cell`. Por exemplo:
+
+Exemplo 1 - Uso básico de Cell
+
+```rust
+use std::cell::Cell;
+
+let x = Cell::new(5);
+x.set(10);
+println!("Valor de x: {:?}", x.get()); // Saída: Valor de x: 10
+```
+
+Exemplo 2 - Usando Struct com Cell
+
+```rust
+use std::cell::{Cell};
+
+#[derive(Debug)]
+struct PhoneModelCell {
+    company_name: String,
+    model_name: String,
+    screen_size: f32,
+    memory: usize,
+    date_issued: u32,
+    on_sale: Cell<bool>,
+}
+
+impl PhoneModelCell {
+    fn make_not_on_sale(&self) {
+        self.on_sale.set(false)
+    }
+}
+
+fn main() {
+    let super_phone_3000 = PhoneModelCell {
+        company_name: "YY Electronics".to_string(),
+        model_name: "Super Phone 3000".to_string(),
+        screen_size: 7.5,
+        memory: 4_000_000,
+        date_issued: 2020,
+        on_sale: Cell::new(true),
+    };
+
+    println!("{super_phone_3000:?}");
+    super_phone_3000.make_not_on_sale();
+    println!("{super_phone_3000:?}");
+}
+```
+
+No Exemplo 2 temos o seguinte
+
+1. **Uso de `Cell` para Mutabilidade Interna**:
+
+   - O campo `on_sale` é do tipo `Cell<bool>`.
+   - `Cell` permite mutabilidade interna mesmo quando a estrutura como um todo é imutável.
+   - Isso é útil quando precisamos modificar campos internos de uma estrutura imutável de forma segura.
+
+2. **Modificação do Status de Venda**:
+
+   - O método `make_not_on_sale()` é chamado para marcar o telefone como não estando mais à venda.
+   - Dentro deste método, o valor do campo `on_sale` é modificado para `false` usando o método `set()` de `Cell`.
+
+### 2. **RefCell**:
+
+`RefCell` também permite mutabilidade interna, mas de uma maneira um pouco diferente. Ela usa o conceito de borrowing em tempo de execução para garantir a segurança em tempo de execução. Isso significa que você pode ter várias referências mutáveis (`&mut`) para os dados dentro de uma `RefCell`, mas o Rust garantirá em tempo de execução que as regras de propriedade sejam seguidas. Aqui está um exemplo:
+
+Exemplo 3 - Uso básico de RefCell
+
+```rust
+use std::cell::RefCell;
+
+let y = RefCell::new(5);
+{
+    let mut y_mut = y.borrow_mut();
+    *y_mut = 10;
+}
+println!("Valor de y: {:?}", *y.borrow()); // Saída: Valor de y: 10
+```
+
+Exemplo 4 - Usando Struct com RefCell
+
+```rust
+use std::cell::{RefCell};
+
+#[derive(Debug)]
+struct UserRefCell {
+    id: i32,
+    year_registered: u32,
+    username: String,
+    active: RefCell<bool>,
+}
+
+fn main() {
+    let user_1 = UserRefCell {
+        id: 1,
+        year_registered: 2020,
+        username: "User 1".to_string(),
+        active: RefCell::new(true),
+    };
+
+    println!("{user_1:?}");
+    let mut borrow = user_1.active.borrow_mut(); // Equivalente let borrow = &mut user_1.active OU *user_1.active.borrow_mut() = false (segunda opcao eh a recomendada)
+    *borrow = false;
+    println!("{user_1:?}");
+}
+```
+
+No Exemplo 4 temos o seguinte
+
+1. **Uso de `RefCell` para Mutabilidade Interna**:
+
+   - `RefCell` é usada para permitir a mutabilidade interna de `bool`, mesmo quando a estrutura como um todo é imutável.
+   - Isso é útil quando precisamos modificar o estado interno de um campo em uma estrutura imutável.
+
+2. **Modificação do Estado de Ativação**:
+   - A função `borrow_mut()` de `RefCell` é chamada para obter uma referência mutável ao estado de ativação.
+   - O estado de ativação é modificado para `false` através da referência mutável obtida.
+
+Esses tópicos destacam como `RefCell` é usado para permitir mutabilidade interna em um campo de estrutura, **mesmo quando a estrutura como um todo é imutável.**
+
+### 3. **Mutex**:
+
+`Mutex` é uma abreviação de "mutual exclusion". Ele é usado para garantir que apenas um thread tenha acesso aos dados mutáveis por vez. Aqui está um exemplo:
+
+Exemplo 5 - Uso básico de Mutex
+
+```rust
+use std::sync::Mutex;
+use std::thread;
+
+let data = Mutex::new(5);
+
+{
+    let mut data_mut = data.lock().unwrap();
+    *data_mut = 10;
+}
+
+println!("Valor de data: {:?}", *data.lock().unwrap()); // Saída: Valor de data: 10
+```
+
+Em Mutex temos dois métodos muitos importantes para realizar "bloqueio" e "desbloqueio" das threads: `lock` e `try_lock`
+
+#### **lock:**
+
+O método `lock` é usado para realizar o bloqueio do Mutex. Quando chamado, ele bloqueia o thread atual até que o Mutex esteja disponível. Isso significa que ele garante acesso exclusivo aos dados protegidos pelo Mutex enquanto estiver bloqueado.
+
+#### **try_lock:**
+
+O método `try_lock` também é usado para adquirir o bloqueio do Mutex, mas de forma não bloqueante. Em vez de bloquear o thread atual, ele tenta adquirir o bloqueio e retorna imediatamente um resultado indicando se foi bem-sucedido ou não.
+
+Exemplo - Uso básico de try_lock
+
+```rust
+use std::sync::Mutex;
+
+let mutex = Mutex::new(5);
+if let Some(mut data) = mutex.try_lock() {
+    *data += 1;
+    println!("Valor após incremento: {:?}", *data);
+} else {
+    println!("Não foi possível bloquear o Mutex neste momento.");
+}
+
+// match mutex {
+//     Ok(value) => println!("The MutexGuard has value {value}"),
+//     _ => println!("Didn't get the lock"),
+// }
+```
+
+Neste exemplo, o thread tenta bloquear o Mutex usando `try_lock`. Se for bem-sucedido, ele incrementa o valor armazenado nos dados protegidos. Se não for bem-sucedido, imprime uma mensagem indicando que não foi possível bloquear o Mutex. O código comentado, representa uma forma alternativa para checagem
+
+### 4. **RwLock**:
+
+`RwLock` (Read–Write Lock) permite que múltiplos threads leiam os dados simultaneamente, mas apenas um thread pode escrever por vez. Não é apenas como um Mutex porque é seguro para threads, mas também é semelhante a um RefCell na forma como é usado: você pode obter referências mutáveis ou imutáveis para o valor dentro dele. Você usa .write().unwrap() em vez de .lock().unwrap() para modificá-lo. Você também pode usar .read().unwrap() para obter acesso de leitura. RwLock é semelhante ao RefCell porque segue as mesmas regras que o Rust usa para referências:
+
+- Muitas variáveis com acesso .read() estão bem.
+- Uma variável com acesso .write() está bem.
+- Você não pode manter mais nada em cima de uma variável retornada de .write(). Você não pode ter uma variável extra feita com .write() ou mesmo com .read().
+
+Mas RwLock também é semelhante a Mutex no sentido de que o programa travará em vez de entrar em pânico se você tentar usar .write() quando não puder obter acesso.
+
+Exemplo - Uso basico de RwLock
+
+```rust
+use std::sync::RwLock;
+
+let data = RwLock::new(5);
+
+{
+    let mut data_mut = data.write().unwrap();
+    *data_mut = 10;
+}
+
+println!("Valor de data: {:?}", *data.read().unwrap()); // Saída: Valor de data: 10
+```
+
+Exemplo - Usando complexo de RwLock
+
+```rust
+let my_rwlock = RwLock::new(5);
+let read1 = my_rwlock.read().unwrap();
+let read2 = my_rwlock.read().unwrap();
+println!("{read1:?}, {read2:?}");
+
+// let write1 = my_rwlock.write().unwrap(); // deadlock
+
+drop(read1);
+drop(read2);
+
+let mut write1 = my_rwlock.write().unwrap();
+*write1 = 6;
+println!("{:?}", my_rwlock);
+
+println!("\n\nEXEMPLO COM TRY_LOCK\n\n");
+
+let my_rwlock = RwLock::new(5);
+let read1 = my_rwlock.read().unwrap();
+let read2 = my_rwlock.read().unwrap();
+println!("{read1:?}, {read2:?}");
+
+let mut write1 = my_rwlock.try_write();
+
+match write1 {
+    Ok(mut value) => {
+        *value += 10;
+        println!("Value {value}")
+    }
+    Err(_) => println!("Couldn't get write access, sorry"),
+};
+
+println!("\n\nEXEMPLO 2 COM TRY_LOCK\n\n");
+
+let my_rwlock2 = RwLock::new(5);
+let mut write2 = my_rwlock2.try_write();
+
+println!("{write2:?}");
+
+match write2 {
+    Ok(mut value) => {
+        println!("Value was {value}");
+        *value += 10;
+        println!("Now Value is {value}")
+    }
+    Err(_) => println!("Couldn't get write access, sorry"),
+};
+```
+
+Nesse exemplo temos o seguinte
+
+#### 1. **Aquisição de Acesso de Leitura:**
+
+```rust
+let read1 = my_rwlock.read().unwrap();
+let read2 = my_rwlock.read().unwrap();
+```
+
+- Dois acessos de leitura são adquiridos ao RwLock usando o método `read()`.
+- Visto que o RwLock permite múltiplos acessos de leitura simultaneamente, isso é permitido.
+
+#### 2. **Liberação dos Acessos de Leitura:**
+
+```rust
+drop(read1);
+drop(read2);
+```
+
+- Os acessos de leitura são liberados.
+
+#### 3. **Aquisição de Acesso de Escrita:**
+
+```rust
+let mut write1 = my_rwlock.write().unwrap();
+*write1 = 6;
+```
+
+- Um acesso de escrita é adquirido ao RwLock usando o método `write()`.
+- Como já não há mais acessos de leitura ativos, o acesso de escrita é permitido.
+- O valor dentro do RwLock é modificado para 6.
+
+#### 4. **Exemplo com `try_write`:**
+
+- O exemplo seguinte mostra o uso do método `try_write()`, que tenta adquirir um acesso de escrita sem bloquear o thread.
+- Se não for possível adquirir o acesso imediatamente, ele retorna um erro.
+
+#### 5. **Tratamento de Erro ao Usar `try_write`:**
+
+- O método `try_write()` é usado para tentar adquirir um acesso de escrita.
+- Se for bem-sucedido, o valor é incrementado em 10 e impresso.
+- Se não for bem-sucedido, uma mensagem de erro é impressa.
