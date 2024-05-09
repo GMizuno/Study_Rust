@@ -1,4 +1,8 @@
-struct Book;
+struct Book {
+    name: String,
+    year: u8,
+}
+
 enum BookType {
     HardCover,
     SoftCover,
@@ -16,6 +20,13 @@ fn check_book_type(book_type: &BookType) {
     match book_type {
         BookType::HardCover => println!("It's hardcover"),
         BookType::SoftCover => println!("It's softcover"),
+    }
+}
+
+fn make_book() -> Book {
+    Book {
+        name: todo!(),
+        year: todo!(),
     }
 }
 
