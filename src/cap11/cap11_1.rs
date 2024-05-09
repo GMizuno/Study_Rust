@@ -41,7 +41,7 @@ fn concat_strings<'a, 'b>(a: Cow<'a, str>, b: Cow<'b, str>) -> String {
 
 // Exemplo 3.1 -> Complicando um pouco mais
 
-fn concat_strings2<'a, 'b>(a: &NewString<'a>, b: &NewString<'b>) -> String {
+fn concat_strings2<'a, 'b>(a: NewString<'a>, b: &NewString<'b>) -> String {
     let mut result = String::new();
     result.push_str(a.string.as_ref());
     result.push_str(b.string.as_ref());
@@ -132,14 +132,24 @@ fn main() {
 
     println!("EXEMPLO 3.1");
 
-    let str1_new = NewString {
-        string: Cow::Borrowed("Hello, "),
-    };
-    let str2_new = NewString {
-        string: Cow::Borrowed("world!"),
-    };
+    let result3 = concat_strings2(
+        NewString {
+            string: Cow::Borrowed("Hello, "),
+        },
+        NewString {
+            string: Cow::Borrowed("world!"),
+        },
+    );
 
-    let result3 = concat_strings2(&str1_new, &str2_new);
+    let result4 = concat_strings2(
+        NewString {
+            string: Cow::Owned(String::from("Hello, ")),
+        },
+        NewString {
+            string: Cow::Owned(String::from("world!")),
+        },
+    );
 
     println!("Result 3: {}", result3);
+    println!("Result 4: {}", result4);
 }
